@@ -78,3 +78,24 @@ fx_lms = function(n_obs, beta_0, beta_1, beta_2, beta_3, sigma){
   
 }
 
+
+####skipping the simulations for now. 
+
+
+mysleep = sleep
+levels(mysleep$group) = c("pre", "post")
+head(mysleep)
+
+m1 = lm(extra~group, data = mysleep)
+summary(m1)
+
+
+mysleep %>% group_by(group) %>%summarize(mean = mean(extra))
+
+mysleep = mysleep %>% mutate(group.num = as.numeric(group) - 1)
+head(mysleep)
+view(mysleep)
+
+#Practice Exercise 3
+mysleep = mysleep %>% mutate(group.c = scale(as.numeric(group)))
+summary(mysleep)
