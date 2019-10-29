@@ -99,3 +99,52 @@ view(mysleep)
 #Practice Exercise 3
 mysleep = mysleep %>% mutate(group.c = scale(as.numeric(group)))
 summary(mysleep)
+
+m = lm(extra ~ group, data=mysleep)
+m_num = lm(extra ~ group.num, data=mysleep)
+m_cent = lm(extra ~ group.c, data = mysleep)
+
+summary(m)
+summary(m_num)
+summary(m_cent)
+
+##with my data
+library(openxlsx)
+setwd("C:\\Users\\Rebecca\\Desktop\\Maryland\\PhD\\MEM\\RB sample data")
+adapt = read.csv("adapt.csv")
+summary(data)
+
+#adapt = adapt %>% mutate(trialhalf = ifelse(adapt$Block > 16, "Block1", "Block2")) 
+
+adapt$trialhalf = factor(ifelse(adapt$Block > 16, "Block1", "Block2"))
+summary(adapt)
+
+simple_model = lm(PercentCorrect ~ trialhalf, data=adapt)   #...I know this is wrong.
+summary(simple_model)
+# Call:
+#   lm(formula = PercentCorrect ~ trialhalf, data = adapt)
+# 
+# Residuals:
+#   Min      1Q  Median      3Q     Max 
+# -0.6511 -0.3685  0.1315  0.3489  0.3815 
+# 
+# Coefficients:
+#   Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)      0.651122   0.006225  104.59  < 2e-16 ***
+#   trialhalfBlock2 -0.032651   0.008524   -3.83 0.000129 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 0.3898 on 8398 degrees of freedom
+# Multiple R-squared:  0.001744,	Adjusted R-squared:  0.001625 
+# F-statistic: 14.67 on 1 and 8398 DF,  p-value: 0.0001289
+
+
+adapt %>% group_by(trialhalf) %>%summarize(mean = mean(PercentCorrect))
+# A tibble: 2 x 2
+#trialhalf  mean
+#<fct>     <dbl>
+#  1 Block1    0.651
+#  2 Block2    0.618
+
+
